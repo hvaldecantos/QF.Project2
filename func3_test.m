@@ -27,27 +27,28 @@ hold off
 % plane around the global minimum that it cannot reach the minimum
 % when the starting point is further from the minimum it seems to be better
 known_minimum = [1; 1];
-max_iter = 100;
+max_iter = 200;
 epsilon = 1.0e-8;
+initial_point = [2; 2];
 
-[errors_gd, points_gd] = gradient_descent(f, gf, [-2; -2], max_iter, epsilon, known_minimum);
 
-figure(copyobj(figContour,0)); hold on
-plot_trace(points_gd, 'red'); hold off
+%[errors_gd, points_gd] = gradient_descent(f, gf, initial_point, max_iter, epsilon, known_minimum);
 
-figure(fig3Dplot); hold on
-plot3_trace(points_gd, f, 'blue'); hold off
+[errors_nw, points_nw] = newton(f, gf, hf, initial_point, max_iter, epsilon, known_minimum);
 
-figError = figure;
-plot_error(errors_gd, "log", 'blue')
+% qnewton is very sensitive to the initial point
+[errors_qn, points_qn] = qnewton(f, gf, initial_point, max_iter, epsilon, known_minimum);
 
-[errors_nw, points_nw] = newton(f, gf, hf, [-2; -2], max_iter, epsilon, known_minimum);
+errors = errors_qn;
+points = points_qn;
 
 figure(figContour); hold on
-plot_trace(points_nw, 'red'); hold off
+plot_trace(points, 'red'); hold off
 
 figure(fig3Dplot); hold on
-plot3_trace(points_nw, f, 'red'); hold off
+plot3_trace(points, f, 'red'); hold off
 
-figure(figError); hold on
+figError = figure;
 plot_error(errors_nw, "log", 'red')
+hold on
+plot_error(errors, "log", 'blue')
