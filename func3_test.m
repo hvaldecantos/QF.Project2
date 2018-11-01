@@ -18,6 +18,7 @@ pxy = gf(X);
 px = reshape(pxy(1,:), size(x));
 py = reshape(pxy(2,:), size(x));
 quiver(x, y, px, py);
+hold off
 
 
 
@@ -26,17 +27,27 @@ quiver(x, y, px, py);
 % plane around the global minimum that it cannot reach the minimum
 % when the starting point is further from the minimum it seems to be better
 known_minimum = [1; 1];
-max_iter = 10000;
+max_iter = 100;
 epsilon = 1.0e-8;
 
-[errors, points] = gradient_descent(f, gf, [-2; -2], max_iter, epsilon, known_minimum);
+[errors_gd, points_gd] = gradient_descent(f, gf, [-2; -2], max_iter, epsilon, known_minimum);
 
-figure(figContour);
-plot_trace(points);
+figure(copyobj(figContour,0)); hold on
+plot_trace(points_gd, 'red'); hold off
 
-figure(fig3Dplot);
-hold on
-plot3_trace(points, f);
+figure(fig3Dplot); hold on
+plot3_trace(points_gd, f, 'blue'); hold off
 
 figError = figure;
-plot_error(errors, "log")
+plot_error(errors_gd, "log", 'blue')
+
+[errors_nw, points_nw] = newton(f, gf, hf, [-2; -2], max_iter, epsilon, known_minimum);
+
+figure(figContour); hold on
+plot_trace(points_nw, 'red'); hold off
+
+figure(fig3Dplot); hold on
+plot3_trace(points_nw, f, 'red'); hold off
+
+figure(figError); hold on
+plot_error(errors_nw, "log", 'red')

@@ -1,4 +1,4 @@
-function plot_error(errors, varargin)
+function plot_error(errors, varargin, color)
     % errors is a vector Rnx1 of error values
     % varargin can be the scale of y axis
     scale = "linear";
@@ -8,9 +8,9 @@ function plot_error(errors, varargin)
     iterations = length(errors);
     
     if(scale == "log")
-        semilogy(1:iterations, errors);
+        semilogy(1:iterations, errors, 'Color', color);
     else
-        plot(1:iterations, errors);
+        plot(1:iterations, errors, 'Color', color);
     end
     title(sprintf("Error vs. Iteration\n(reached err %.4e in %d its.)",errors(iterations), iterations));
 end
