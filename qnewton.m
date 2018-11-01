@@ -32,7 +32,7 @@ function [errors, points] = qnewton(f, g, x, maxiter, E, varargin)
         
         F = F + (y'*(F*y + s)/(y'*s)^2)*(s*s') - (s*y'*F + F*y*s')/(y'*s);
 
-        if(nargin>6) current_err = norm(f(x) - f(xstar));
+        if(nargin>5) current_err = norm(f(x) - f(xstar));
         else         current_err = norm(f(x) - f(x0));
         end
 
