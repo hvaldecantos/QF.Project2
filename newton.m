@@ -20,9 +20,9 @@ function [errors, points] = newton(f, g, h, x0, maxiter, E, varargin)
     while true
         i = i + 1;
 
-        p = h(x0) \ -g(x0);
+        %p = h(x0) \ -g(x0);
         % use the Moore-Penrose pseudoinverse of the hessian
-        %p = pinv( h(f, g, x0, 4)) * -g(f, x0, 4);
+        p = pinv( h(x0)) * -g(x0); % For function 2 is needed because matrix is close to singular
         a = backtracking_line_search(f, g, p, x0);
         x1 = x0 + a*p;
 
