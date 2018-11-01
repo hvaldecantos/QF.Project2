@@ -1,4 +1,4 @@
-function [errors, points] = qnewton(f, g, x, maxiter, E, varargin)
+function [errors, points] = qnewton(f, g, x0, maxiter, E, varargin)
     % f: is a function such that f(x) : Rnx1 -> R
     % g: is the gradient of f, g(x) : Rnx1 -> Rnx1
     % h: is the hessian of f, h(x) : Rnx1 -> Rnx(n*m)
@@ -15,30 +15,31 @@ function [errors, points] = qnewton(f, g, x, maxiter, E, varargin)
 
     i = 0;
     errors = [];
-    points = x;
+    points = x0;
     
-    F = eye(length(x));
+    F = eye(length(x0));
 
     while true
         i = i + 1;
         
-        x0 = x;
-        p = -F * g(x);
+        p = -F * g(x0);
         a = backtracking_line_search(f, g, p, x0);
-        x = x + a*p;
+        x1 = x0 + a*p;
         
         s = a*p;
-        y = g(x) - g(x0);
+        y = g(x1) - g(x0);
         
         F = F + (y'*(F*y + s)/(y'*s)^2)*(s*s') - (s*y'*F + F*y*s')/(y'*s);
 
-        if(nargin>5) current_err = norm(f(x) - f(xstar));
-        else         current_err = norm(f(x) - f(x0));
+        if(nargin>5) current_err = norm(f(x1) - f(xstar));
+        else         current_err = norm(f(x1) - f(x0));
         end
 
         errors = [errors; current_err];
-        points = [points, x];
-
+        points = [points, x1];
+        
+        x0 = x1;
+        
         if((current_err <= E) || (i >= maxiter)); break; end
     end
 end
