@@ -1,26 +1,36 @@
-% Fletcher-Reeves conjugate gradient method
-function [xstar, fstar, counter, error, points, fks] = conjugate_direction(f, g, x0, epsilon, maxiterations)
+function [errors, points] = conjugate_direction(f, g, x0, epsilon, maxiterations, varargin)
+    % Fletcher-Reeves conjugate gradient method
     x = x0;
-    counter = 0;
-    error = 1e300;
+    
+    if(nargin>5)
+        xstar = varargin{1};
+    end
+    
+    i = 0;
     points = [x];
-    fks = [feval(f, x)];
+    errors = [];
+
     gradF = g(x);
     d = -gradF;
 
-    while error > epsilon && counter < maxiterations
-        counter = counter + 1;
-        %alpha = fminsearch(@(a) feval(f,x + a*d), 0.0);
-        alpha = backtracking_line_search(f, g, d, x, 0.6);
-        x = x + alpha * d;
-        points = [points, x];
-        fks = [fks; feval(f, x)];
-        error = norm(d);
+    while true
+        i = i + 1;
+        a = backtracking_line_search(f, g, d, x);
+        x = x + a * d;
+
+        if(nargin>5) current_err = norm(f(x) - f(xstar));
+        else         current_err = norm(f(x) - f(x0));
+        end
+
+        errors = [errors; current_err];
+        points = [points, x];        
+
         gradFp = gradF;
         gradF = g(x);
         beta = (gradF'*gradF)/(gradFp'*gradFp);
         d = -gradF + beta * d;
+        x0 = x;
+        
+        if((current_err <= epsilon) || (i >= maxiterations)); break; end
     end
-    xstar = x;
-    fstar = feval(f, x);
 end
