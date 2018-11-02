@@ -17,6 +17,7 @@ function [errors, points] = newton(f, g, h, x0, maxiter, E, varargin)
     errors = [];
     points = x0;
 
+    a = 1;
     while true
         i = i + 1;
 
