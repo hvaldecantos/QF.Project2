@@ -1,3 +1,5 @@
+function [errors, points] = func3_test(method_name)
+
 f = @func3;
 gf = @func3gradient;
 hf = @func3hessian;
@@ -27,20 +29,32 @@ hold off
 % plane around the global minimum that it cannot reach the minimum
 % when the starting point is further from the minimum it seems to be better
 known_minimum = [1; 1];
-max_iter = 200;
+max_iter = 10000;
 epsilon = 1.0e-8;
-initial_point = [2; 2];
+initial_point = [0; 0];
+%initial_point = [-2; -2]; % qnewton does not converge NaN
 
-
-%[errors_gd, points_gd] = gradient_descent(f, gf, initial_point, max_iter, epsilon, known_minimum);
-
-[errors_nw, points_nw] = newton(f, gf, hf, initial_point, max_iter, epsilon, known_minimum);
-
-% qnewton is very sensitive to the initial point
-[errors_qn, points_qn] = qnewton(f, gf, initial_point, max_iter, epsilon, known_minimum);
-
-errors = errors_qn;
-points = points_qn;
+label = "";
+tic
+switch method_name
+    case "gd"
+        label = "F3 - GD";
+        [errors, points] = gradient_descent(f, gf, initial_point, max_iter, epsilon, known_minimum);
+    case "nw"
+        label = "F3 - NW";
+        [errors, points] = newton(f, gf, hf, initial_point, max_iter, epsilon, known_minimum);
+    case "qn"
+        label = "F3 - QN";
+        [errors, points] = qnewton(f, gf, initial_point, max_iter, epsilon, known_minimum);
+    case "cd"
+        %[xstar, fstar, counter, errors, points, fks] = conjugate_direction(f, gf, initial_point, epsilon, max_iter, known_minimum);
+        label = "F3 - CD";
+        [errors, points] = conjugate_direction(f, gf, initial_point, epsilon, max_iter, known_minimum);
+    otherwise
+        sprintf("Method %s not implemented", method_name)
+        return;
+end
+toc
 
 figure(figContour); hold on
 plot_trace(points, 'red'); hold off
@@ -48,7 +62,5 @@ plot_trace(points, 'red'); hold off
 figure(fig3Dplot); hold on
 plot3_trace(points, f, 'red'); hold off
 
-figError = figure;
-plot_error(errors_nw, "log", 'red')
-hold on
-plot_error(errors, "log", 'blue')
+figure;
+plot_error(errors, "log", 'red', label)
