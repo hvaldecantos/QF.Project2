@@ -1,4 +1,3 @@
-function f = func1(x)
-    n = size(x, 1);
-    f = [1:n] * x.^2;
+function f = func1()
+    f = @(x) [1:100] * x.^2;
 end
