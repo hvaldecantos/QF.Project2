@@ -11,6 +11,7 @@ initial_point = ones(num_vars,1); % initial point shoud be in the domain of f
 label = "";
 known_minimum = zeros(num_vars,1);
 
+tic
 switch method_name
     case "gd"
         label = "F1 - GD";
@@ -24,11 +25,12 @@ switch method_name
     case "cd"
         label = "F1 - CD";
         [errors, points] = conjugate_direction(f, gf, initial_point, max_iter, epsilon, known_minimum);
-        %[xstar, fstar, counter, errors, points, fks] = conjugate_direction(f, gf, initial_point, max_iter, epsilon);
     otherwise
         sprintf("Method %s not implemented", method_name)
         return;
 end
+toc
 
 figure;
 plot_error(errors, "log", 'red', label)
+sprintf("Minimum value f1 is %s ", f(points(:,size(points,2))))

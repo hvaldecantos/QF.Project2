@@ -47,9 +47,8 @@ switch method_name
         label = "F3 - QN";
         [errors, points] = qnewton(f, gf, initial_point, max_iter, epsilon, known_minimum);
     case "cd"
-        %[xstar, fstar, counter, errors, points, fks] = conjugate_direction(f, gf, initial_point, epsilon, max_iter, known_minimum);
         label = "F3 - CD";
-        [errors, points] = conjugate_direction(f, gf, initial_point, epsilon, max_iter, known_minimum);
+        [errors, points] = conjugate_direction(f, gf, initial_point, max_iter, epsilon, known_minimum);
     otherwise
         sprintf("Method %s not implemented", method_name)
         return;
@@ -64,3 +63,4 @@ plot3_trace(points, f, 'red'); hold off
 
 figure;
 plot_error(errors, "log", 'red', label)
+sprintf("Minimum value f3 is %s ", f(points(:,size(points,2))))

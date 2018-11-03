@@ -11,6 +11,7 @@ initial_point = zeros(num_vars,1); % initial point shoud be in the domain of f
 
 label = "";
 
+tic
 switch method_name
     case "gd"
         label = "F2 - GD";
@@ -23,13 +24,14 @@ switch method_name
         [errors, points] = qnewton_constrained(f, gf, initial_point, max_iter, epsilon);
     case "cd"
         label = "F2 - CD";
-        %[errors, points] = conjugate_direction_constrained(f, gf, initial_point, max_iter, epsilon);
         [errors, points] = conjugate_direction_constrained(f, gf, initial_point, max_iter, epsilon);
     otherwise
         sprintf("Method %s not implemented", method_name)
         return;
 end
+toc
 
 figure;
 plot_error(errors, "log", 'red', label)
 f(points(:,size(points,2)))
+sprintf("Minimum value f2 is %s ", f(points(:,size(points,2))))
