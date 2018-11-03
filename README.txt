@@ -38,7 +38,7 @@ INSTRUCTIONS:
         "gd" stands for Gradient descent method
   		"nw" stands for Newton method
   		"qn" stands for Quasi-Newton method
-  		"cd" stands for Quasi-Newton method
+  		"cd" stands for Conjugate Descent method
 
   4. There are three functions to test:
 
