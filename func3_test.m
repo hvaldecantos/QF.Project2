@@ -1,8 +1,8 @@
 function [errors, points] = func3_test(method_name)
 
-f = @func3;
-gf = @func3gradient;
-hf = @func3hessian;
+f = func3();
+gf = func3gradient();
+hf = func3hessian();
 
 [x, y] = meshgrid(-2:0.1:2);
 % all points arranged as X = [x1, ..., xn] from the meshgrid
@@ -32,7 +32,7 @@ known_minimum = [1; 1];
 max_iter = 10000;
 epsilon = 1.0e-8;
 initial_point = [0; 0];
-%initial_point = [-2; -2]; % qnewton does not converge NaN
+%initial_point = [1; 2]; % qnewton does not converge NaN
 
 label = "";
 tic
