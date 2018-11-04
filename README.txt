@@ -23,11 +23,11 @@ INSTRUCTIONS:
      For example, for Function 1 with Gradient descent method:
 
         >> [e, p] = func1_test("gd");
-		Elapsed time is 0.007559 seconds.
+        Elapsed time is 0.007559 seconds.
 
-		ans = 
+        ans = 
 
-		    "Minimum value f1 is 9.750534e-05 "
+        "Minimum value f1 is 9.750534e-05 "
 
      The return will tell you about the time the method has consumed and
      the variables in [e, p] will contains the errors and points obtained
@@ -36,9 +36,9 @@ INSTRUCTIONS:
   3. For a different method just change the string argument:
 
         "gd" stands for Gradient descent method
-  		"nw" stands for Newton method
-  		"qn" stands for Quasi-Newton method
-  		"cd" stands for Conjugate Descent method
+        "nw" stands for Newton method
+        "qn" stands for Quasi-Newton method
+        "cd" stands for Conjugate Descent method
 
   4. There are three functions to test:
 
